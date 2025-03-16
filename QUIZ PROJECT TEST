@@ -56,6 +56,19 @@ button:hover {
     background: #0056b3;
 }
 
+@media (max-width: 768px) {
+    .quiz-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+
 
 
 // script.js
@@ -76,23 +89,26 @@ const quizContainer = document.getElementById('quiz');
 const submitButton = document.getElementById('submit');
 const resultsContainer = document.getElementById('results');
 
+// Function to load the quiz
 function loadQuiz() {
+    quizContainer.innerHTML = ""; // Clear previous content
     quizData.forEach((q, index) => {
         const questionHTML = `
             <div class="question">
-                <p>${q.question}</p>
+                <p><strong>${q.question}</strong></p>
                 ${q.options
                     .map(
-                        (option, i) =>
+                        option =>
                             `<label><input type="radio" name="q${index}" value="${option}"> ${option}</label>`
                     )
                     .join('<br>')}
             </div>
         `;
-        quizContainer.innerHTML += questionHTML;
+        quizContainer.insertAdjacentHTML("beforeend", questionHTML);
     });
 }
 
+// Function to calculate and show results
 function showResults() {
     let score = 0;
     quizData.forEach((q, index) => {
@@ -101,11 +117,9 @@ function showResults() {
             score++;
         }
     });
-    resultsContainer.innerText = `You scored ${score} out of ${quizData.length}!`;
+    resultsContainer.innerHTML = `<p><strong>You scored ${score} out of ${quizData.length}!</strong></p>`;
 }
 
+// Load the quiz on page load
 loadQuiz();
 submitButton.addEventListener('click', showResults);
-
-
-
