@@ -1,0 +1,48 @@
+// script.js
+const quizData = [
+    {
+        question: "What is the capital of France?",
+        options: ["Paris", "Rome", "Madrid", "Berlin"],
+        answer: "Paris"
+    },
+    {
+        question: "Who wrote 'Hamlet'?",
+        options: ["Shakespeare", "Hemingway", "Fitzgerald", "Tolkien"],
+        answer: "Shakespeare"
+    }
+];
+
+const quizContainer = document.getElementById('quiz');
+const submitButton = document.getElementById('submit');
+const resultsContainer = document.getElementById('results');
+
+function loadQuiz() {
+    quizData.forEach((q, index) => {
+        const questionHTML = `
+            <div class="question">
+                <p>${q.question}</p>
+                ${q.options
+                    .map(
+                        (option, i) =>
+                            `<label><input type="radio" name="q${index}" value="${option}"> ${option}</label>`
+                    )
+                    .join('<br>')}
+            </div>
+        `;
+        quizContainer.innerHTML += questionHTML;
+    });
+}
+
+function showResults() {
+    let score = 0;
+    quizData.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected && selected.value === q.answer) {
+            score++;
+        }
+    });
+    resultsContainer.innerText = `You scored ${score} out of ${quizData.length}!`;
+}
+
+loadQuiz();
+submitButton.addEventListener('click', showResults);
